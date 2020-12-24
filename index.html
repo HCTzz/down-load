@@ -11,7 +11,7 @@
 
 <body>
   <div id="app">
-    <down-load>
+    <down-load roll-ele='#app' :on-refresh="onRefresh">
       <ul>
         <li>1</li>
         <li>1</li>
@@ -154,15 +154,30 @@
     </down-load>
     
   </div>
-  <!-- <script src="./node_modules/vue/dist/vue.js"></script> -->
+  <script src="./node_modules/vue/dist/vue.js"></script>
    <script src="./dist/down-load.js"></script>   
 </body>
 <style>
+  html,body,#app{
+    height: 100%;
+
+  }
   li{
     height: 50px;
     line-height: 50px;
   }
+  li:hover{
+    background: red;
+
+  }
 </style>
 <script>
-
+let app = new Vue({
+  el:'#app',
+  methods: {
+    onRefresh(done){
+      setTimeout(done,1000 * 1000);
+    }
+  },
+})
 </script>

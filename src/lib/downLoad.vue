@@ -1,17 +1,19 @@
 <template lang="html">
-    <div class="refresh-moudle" @touchstart="touchStart($event)" @touchmove="touchMove($event)" @touchend="touchEnd($event)" :style="{transform: 'translate3d(0,' + top + 'px, 0)'}">
+    <div :class="{'refresh-moudle':true}" @touchstart="touchStart($event)" @touchmove="touchMove($event)" @touchend="touchEnd($event)" :style="{transform: 'translate3d(0,' + top + 'px, 0)'}">
+      <div :class="{'pull-shade':dropDownState == 3}">
+      </div>
       <header class="pull-refresh">
-        <slot name="pull-refresh">
-          <div class="down-tip" v-if="dropDownState==1">
-            <span class="down-text">{{dropDownInfo.downText}}</span>
-          </div>
-          <div class="up-tip" v-if="dropDownState==2">
-            <span class="up-text">{{dropDownInfo.upText}}</span>
-          </div>
-          <div class="refresh-tip" v-if="dropDownState==3">
-            <span class="refresh-text">{{dropDownInfo.refreshText}}</span>
-          </div>
-        </slot>
+      <slot name="pull-refresh">
+        <div class="down-tip" v-if="dropDownState==1">
+          <span class="down-text">{{dropDownInfo.downText}}</span>
+        </div>
+        <div class="up-tip" v-if="dropDownState==2">
+          <span class="up-text">{{dropDownInfo.upText}}</span>
+        </div>
+        <div class="refresh-tip" v-if="dropDownState==3">
+          <span class="refresh-text">{{dropDownInfo.refreshText}}</span>
+        </div>
+      </slot>
       </header>
       <slot></slot>
     </div>
@@ -120,7 +122,7 @@ export default {
            */
       refresh () {
           this.dropDownState = 3
-          this.top = 100;
+          this.top = 50;
           // 这是全是静态数据,延时1200毫秒，给用户一个刷新的感觉，如果是接口数据的话，直接调接口即可
           if(this.onRefresh){
             this.onRefresh(this.refreshDone)
@@ -148,10 +150,20 @@ export default {
 .refresh-moudle {
   width: 100%;
   height: 100%;
-  margin-top: -80px;
+  margin-top: -60px;
   transition-duration: .5s;
   transition-timing-function: ease-out;
   -webkit-overflow-scrolling: touch; /* ios5+ */
+  position: relative;
+}
+
+.pull-shade{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .pull-refresh {
@@ -165,8 +177,8 @@ export default {
 .refresh-moudle  .up-tip span,
 .refresh-moudle  .refresh-tip span{
   display: block;
-  height: 80px;
-  line-height: 100px;
+  height: 60px;
+  line-height: 80px;
   text-align: center;
   font-size: 16px;
 }
